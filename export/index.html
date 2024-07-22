@@ -1,1 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
+    <title>Présentation ChatGPT</title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/Titillium-web.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: style="color: #FFFFFF" class="has-dark-background drop" data-background-color="#0f6496" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<img src="logo_ChatGPT-white.png" alt="" style="width: 200px; object-fit: fill">
+
+# Présentation ChatGPT
+<!-- .element: style="font-size: 3em; color: #FFFFFF" -->
+Les bases pour bien démarrer et bien utiliser l'outil ! <!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Sommaire
+- Durée du cours : 30 min
+- Dans ce cours, nous allons aborder différents sujets liés à ChatGPT : 
+	- **Préambule et prérequis** : Qu'est-ce que l'IA ? Utilisez-vous l'IA dans votre quotidien ?,
+	- **Présentation** : Historique, fonctionnement, cas d'usages de ChatGPT.
+	- **Les limites et risques** : Connaitre et comprendre les limites et les risques de l'IA.
+	- **Mesures d'atténuations des risques** : Pourquoi l'IA hallucine ? Contre-mesures et technique du prompt.
+	- **Conclusion** : Résumé du cours et ouverture.
+- Nous finirons cette présentation par un temps d'échange participatif.
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Objectifs du cours
+
+- **Objectif et compétences à acquérir** : 
+	- Vocabulaire et acronymes liés au cours.
+	- Découvrir ChatGPT, les cas d'usages, connaitre ses forces et ses limites.
+	- Maitriser la technique du prompt et les mesures d'atténuation des erreurs de l'IA.
+	- Savoir choisir entre ChatGPT et un moteur de recherche.
+- **Approche pédagogique** : Un cours théorique, puis approfondir par soi-même en TP.
+- **Blocs de compétences** : 
+	- B1.6 Organiser son développement professionnel.
+	- B3.1 Protéger les données à caractère personnel.
+	- B3.2 Préserver l'identité numérique de l’organisation.
+	- B3.3 Sécuriser les équipements et les usages des utilisateurs.
+- **Évaluation des acquis** : L'ensemble des TP seront évalués, et les éléments de ce cours feront l'objet de questions lors des prochaines évaluations.
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="color: #FFFFFF" class="has-dark-background drop" data-background-color="#0f6496" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Préambule et prérequis
+<!-- .element: style="font-size: 3em; color: #FFFFFF" -->
+Quelques notions clés ! <!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-white.png" alt="" style="object-fit: scale-down">
+
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+LA PAROLE EST À VOUS !<!-- .element: style="font-size: 1.5em" -->
+## Qu'est-ce que l'IA ?
+<!-- .element: style="font-size: 3em" -->
+Intelligence Artificielle (AI, en anglais)
+<!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-blue.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### IA : Définition
+- **Programme informatique** utilisé par une machine visant à **simuler l'intelligence humaine**.
+- Les principaux composants de l'IA :
+	- **Puissance des systèmes informatiques** : Capacités de calcul et de stockage.
+    - **Grande quantité de données** : Informations nécessaires pour l'apprentissage et la prise de décision.
+    - **Algorithmes d'IA avancés** : Codes complexes afin de comprendre, apprendre et s'améliorer.
+- Les sous-domaines de l'IA :
+	- **Machine Learning** : Techniques permettant aux systèmes de s'améliorer à partir de données.
+	- **NLP (Traitement du langage naturel)** : Capacité à comprendre et à générer du langage humain.
+	- **Vision par ordinateur** : Analyse et interprétation d'informations visuelles du monde réel.
+	- **Robotique** : Conception et utilisation de robots pour des tâches physiques et cognitives.
+- Les classifications de l'IA :
+	- **IA faible (ou étroite)** : Spécialisée dans des tâches spécifiques et limitée à un domaine particulier.
+	- **IA forte (ou générale)** : Concept théorique visant à égaler ou surpasser l'intelligence humaine dans tous les aspects cognitifs.
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-info-circle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+À noter ! <span style="font-weight: normal; color: black">L'IA Générale n'est que théorique et pose certaines questions phylosophiques et éthiques.</span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+LA PAROLE EST À VOUS !<!-- .element: style="font-size: 1.5em" -->
+## Utilisez-vous l'IA dans votre quotidien ?
+<!-- .element: style="font-size: 2.9em" -->
+Cas d'usages courants de l'IA.
+<!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-blue.png" alt="" style="object-fit: scale-down">
+
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+### IA : Cas d'usages
+- L'IA est intégrée dans notre quotidien dans tous les secteurs :
+	- **Assistants Virtuels :** Siri, Alexa, etc.
+	- **Recommandation :** Netflix, Amazon, etc.
+	- **Automobile :** Développement de voitures autonomes, etc.
+	- **Médecine :** Diagnostic de maladies, prévision d'épidémies, recherche de vaccins, etc.
+	- **Finance :** Détection de fraudes, analyse de marchés, etc.
+	- **Vente au Détail :** Analyse comportementale, personnalisation des offres, etc.
+	- **Industrie :** Maintenance prédictive des équipements, optimisation des chaînes de production, etc.
+	- **Éducation :** Tutorat intelligent, personnalisation de l'apprentissage, etc.
+	- **Sécurité :** Surveillance et détection d'activités suspectes, cybersécurité, etc.
+	- **Environnement :** Modélisation climatique, gestion des ressources naturelles, etc.
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-info-circle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+A savoir ! <span style="font-weight: normal; color: black">Ce sont toutes des IA de type faible (ou étroite) car elles sont spécifiques à un domaine.</span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="color: #FFFFFF" class="has-dark-background drop" data-background-color="#0f6496" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Présentation de ChatGPT
+<!-- .element: style="font-size: 3em; color: #FFFFFF" -->
+_"ChatGPT est le moment iPhone de l'Intelligence artificielle."_<!-- .element: style="align: center; color: #bfd04d; font-size: 1.8em" -->  
+
+Jensen Huang, CEO de Nvidia<!-- .element: style="color: #FFFFFF" -->
+
+
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-white.png" alt="" style="object-fit: scale-down">
+
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Historique de ChatGPT
+<img src="different-gpt-versions.jpeg" alt="" style="object-fit: scale-down">
+
+source : https://www.tooltester.com/fr/blog/chatgpt-statistiques
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div>
+
+<aside class="notes"><ul>
+<li><strong>2015</strong> : Création d&#39;OpenAI par Sam Altman et Elon Musk.</li>
+<li><strong>2018</strong> : Sortie de GPT-1 et départ d&#39;Elon Musk du conseil d&#39;administration d&#39;OpenAI (conflits d&#39;intérêts avec Tesla et SpaceX).</li>
+<li><strong>2020</strong> : Sortie de GPT-3 (175 milliards de paramètres).</li>
+<li><strong>2022</strong> : Sortie de ChatGPT basée sur GPT-3.5 avec 100 millions d&#39;utilisateurs en 2 mois (9 mois pour Tiktok)</li>
+<li><strong>2023</strong> : Lancement de GPT-4 (600 milliards de paramètres).</li>
+</ul>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Qu'est-ce que ChatGPT ?
+
+- **Interface** de communication sous forme de **chatbot** utilisant le **modèle de langage GPT** d'OpenAI.
+- GPT signifie **Generative Pre-trained Transformer** :
+	- Famille de modèles de traitement automatique du langage naturel (**NLP**). 
+	- Pré-entraînés via le **machine learning** : Par exemple, GPT-4 possède environ 600 milliards de paramètres, contre 175 milliards pour GPT-3.
+- Génère du texte en réponse aux données et au contexte fournis par l'utilisateur (**prompt**).
+- Les **réponses sont basées sur l'analyse statistique** des données d'entrainement **sans vérification d'exactitude**.
+
+<div class="callout callout-color7">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-bolt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Attention !<span style="font-weight: normal; color: black"> Le programme essaie uniquement de **ressembler à un texte cohérent** en se basant sur des statistiques et des probabilités.</span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div>
+
+<aside class="notes"><ul>
+<li><strong>Chatbot</strong> : Dialogueur ou agent conversationnel, est un logiciel qui dialogue avec un utilisateur en langage naturel. Il interprète une requête opérationnelle pour son système d&#39;information.</li>
+<li><strong>NLP</strong> : Natural Language Processing</li>
+</ul>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Comment est entrainé ChatGPT ?
+- **Collecte des données** : Textes issus d'Internet (livres, articles, sites web, forum, etc.).
+- **Prétraitement** : Nettoyage des données, suppression des informations sensibles, et découpage du texte en "tokens" (jetons, petites unités de mots).
+- **Entraînement** :
+	1. **Apprentissage supervisé** : Prédiction des mots manquants dans des phrases en utilisant des exemples. Les réponses correctes sont fournies par des humains.
+    2. **Renforcement par feedback humain (RLHF)** : Le modèle génère des réponses, qui sont ensuite évaluées par des humains. Ces évaluations permettent d'améliorer le modèle via des récompenses ou des pénalités.
+    3. **Auto-amélioration** : Le modèle ajuste ses réponses en fonction des évaluations reçues et s'améliore continuellement.
+- **Tests et déploiement** : Le modèle est testé avant d'être déployé, avec une maintenance continue pour améliorer ses performances.
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Pourquoi utiliser ChatGPT ?
+
+- Outil d'**assistance** qui fournit des **informations générales** avec un langage naturel.
+- **Plutôt fiable** dans **certains domaines** largement documentés (science, histoire, géographie, littérature, etc.) :
+	- **Éducation, culture générale** : Aider aux devoirs, créer du matériel éducatif, expliquer des concepts, fournir des définitions, résumer des textes, traduire des contenus.
+	- **Rédaction et édition** : Générer du contenu (articles, blogs, courriels), corriger la grammaire et le style.
+	- **Service client** : Répondre automatiquement aux questions fréquentes, fournir du support technique.
+	- **Recherche** : Résumer des documents, extraire des informations clés.
+	- **Programmation** : Aider à générer et à déboguer du code.
+	- **Créativité** : Écrire des histoires, des poèmes, scénarios, créer des personnages pour des jeux de rôle.
+	- **Traduction** : Traduire des textes, aider à la compréhension de langues étrangères.
+
+<div class="callout callout-color5">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-exclamation-triangle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Remarque ! <span style="font-weight: normal; color: black">Les bénéfices sont nombreux, à condition que les utilisateurs soient conscients de ses limites et des risques associés.</span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="color: #FFFFFF" class="has-dark-background drop" data-background-color="#0f6496" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Quand éviter d'utiliser ChatGPT ?
+<!-- .element: style="font-size: 3em; color: #FFFFFF" -->
+**Sam Altman**, CEO d'OpenAI (sept. 2022)
+<!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+> _"**C'est un gros problème** avec la version actuelle des modèles de langage, c'est que **nous ne les avons pas encore formés pour** essayer d'**aimer être utiles et pour vérifier l'exactitude** de ce qu'ils disent. Ils essaient juste de ressembler à un texte cohérent. C'est le plus gros problème actuel avec les modèles de langage… **Ce sont de beaux parleurs très convaincants**."_
+> <!-- .element: style="font-size: 1.4em" --> 
+
+Source : [How I Built This Podcast with Guy Raz and Sam Altman, CEO d'OpenAI - Episode 491](https://open.spotify.com/episode/3oOX1QHLPw9uvLL5LmBk28?si=be01818cc53248b3)<!-- .element: style="color: #bfd04d" -->
+
+
+
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-white.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div>
+
+<aside class="notes"><p>Transcription originale : =<em>&quot;<strong>That’s a big problem</strong> with the current version of language models is <strong>we haven’t trained them yet to</strong> try to like <strong>be helpful and to verify</strong> that what they’re saying is accurate. They’re just trying to sort of sound like coherent text. That is the current biggest single problem with language models…<strong>they are very convincing bullshitters</strong>.&quot;</em></p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Les limites de ChatGPT
+- **Date de fin des connaissances** : Les données d'entraînement s'arrêtent à une certaine date :
+	- janvier 2022 pour GPT 3.5 ;
+	- décembre 2023 pour GPT4 ; 
+	- octobre 2023 pour GPT-4o ;
+- **Qualité instable** : 
+	- la qualité des réponses de ChatGPT fluctue et n'augmente pas forcément d'une version à l'autre ;
+	- pas toujours disponible, dépendante et du nombre de connexions (version gratuite).
+- **Sources non vérifiables** : Impossible de connaître les sources exactes des réponses.
+- **Filtrage des réponses** : Par exemple les sujets classifié comme racistes, sexuels ou sexistes, etc.
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-info-circle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+A savoir ! <span style="font-weight: normal; color: black"> ChatGPT peut accéder à Internet mais les informations ne sont pas intégrées dans le modèle de données pour des raisons de sécurité (infuance, biais).</span> 
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Risques liés à l'IA et ChatGPT
+
+- **Confidentialité** : fuite d'information, stockage des données non maîtrisé.
+- **Erreurs ou inexactitudes** : Réponses non vérifiées et possibilité de réponses erronées (hallucinations d'IA), obsolètes ou biaisées.
+- **Sécurité** : Exploitation malveillante, automatisation des attaques, usurpation d'identité, etc.
+- **Éthiques** : Biais et discrimination (présents dans les données d'entraînement), manipulation et influence de l'opinion publique, plagiat.
+- **Impact sur l'emploi** : automatisation des tâches qui menace certains secteurs.
+- **Responsabilité** : Défis liés à la détermination de la responsabilité en cas de préjudice et à la fiabilité des informations fournies.
+- **Risques climatiques** : ChatGPT 3 émet 23 kg de CO2 par jour et utilise environ 30 millions de litres d'eau par jour pour le refroidissement des serveurs. Une requête à ChatGPT consomme 25 fois plus d'énergie qu'une requête Google.
+
+<div class="callout callout-color7">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-bolt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Attention ! <span style="font-weight: normal; color: black"> ChatGPT fait régulièrement l'objet de plaintes pour non-respect du [RGPD](https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on) (Règlement Général sur la Protection des Données Personnelles). </span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div>
+
+<aside class="notes"><ul>
+<li>Exemples :<ul>
+<li>Biais : Certaines études démontrent la présence de biais dans les réponses de ChatGPT. Par exemple une lettre de motivation pour un homme mettra en évidence des aspects liés aux performances et aux compétences tandis qu&#39;une lettre de motivation pour une femme mettre l&#39;accent sur des aspects de beauté, de gentillesses, etc. </li>
+<li>Éthique : Par exemple, la prise de décision autonome pour des drones armés, la délégation de la décision de tuer à une machine soulève des questions sur la responsabilité et l&#39;éthique.</li>
+<li>Emploi : Les doubleurs français demandent une exception nationale pour protéger leur métier au niveau juridique. Ils craignent d&#39;être remplacés par l’IA pour plusieurs raisons :<ul>
+<li>Cout financier, amplitude horaire</li>
+<li>Capacité à synthétiser la vraie voix de l&#39;acteur, puis de changer la langue.</li>
+<li>Capacité à modifier le mouvement des lèvres pour correspondre aux mots de la langue doublées.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="color: #FFFFFF" class="has-dark-background drop" data-background-color="#0f6496" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Mesures d'atténuations des risques
+<!-- .element: style="font-size: 3em; color: #FFFFFF" -->
+Hallucination, erreurs, inexactitudes, etc. 
+<!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-white.png" alt="" style="object-fit: scale-down">
+
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Comprendre pourquoi l'IA hallucine
+- Problèmes de conception, liés aux algorithmes :
+	- **Basés uniquement sur des statistiques** sans véritable compréhension du contexte.
+	- **Utilisation d'hypothèses simplifiées** qui ne reflètent pas la complexité réelle.
+	- **Critères et seuils mal définis** qui peuvent entraîner des faux positifs ou des faux négatifs.
+- Problèmes liés à la qualité des données :
+	- **Représentativité des données** qui ne couvre pas suffisamment de situations réelles.
+	- **Qualité des données entrées** lors de l'entraînement ou des prompts utilisateurs.
+- Problèmes matériels et techniques :    
+	- **Défaillance des infrastructures ou défauts matériels** qui peuvent altérer les données collectées (micro défectueux, par exemple).
+	- **Erreurs humaines** dans la gestion des systèmes d'IA, la configuration des algorithmes ou dans l'interprétation des données.
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-info-circle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+A noter ! <span style="font-weight: normal; color: black">Les hallucinations dans les IA existent depuis toujours et résultent de leur **conception**, de leurs **limites**, de la **qualité des données** et de la **qualité des infrastructures**.</span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div>
+
+<aside class="notes"><p>source :  <a href="https://www.science.org/content/article/is-your-ai-hallucinating-new-approach-can-tell-when-chatbots-make-things-up">https://www.science.org/content/article/is-your-ai-hallucinating-new-approach-can-tell-when-chatbots-make-things-up</a></p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Mesures d'atténuations
+- **Réglementation** : Lois, normes, encadrements pour le respect des standards éthiques et de conformité ([EU AI Act](https://www.europarl.europa.eu/topics/fr/article/20230601STO93804/loi-sur-l-ia-de-l-ue-premiere-reglementation-de-l-intelligence-artificielle), [RGPD](https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on)).
+	- Audits réguliers pour vérifier la conformité et la performance.
+	- Traçabilité et transparence des processus et des décisions.
+	- Protection des données et sécurité intégrées à tous les niveaux des processus.
+	- Mécanismes de responsabilité et recours clairement définis en cas de préjudice.
+- **Sensibilisation des utilisateurs** : Information, formation et encouragement à contrôler les réponses en gardant un esprit critique.
+- **Ne pas considérer l'IA comme une source d'informations fiable** mais comme un assistant et un complément aux sources d'information fiables.
+- **Faire contrôler les réponses d'IA par des IA secondaires** elles-mêmes supervisées par des humains.
+
+<div class="callout callout-color1">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-info-circle" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Info ! <span style="font-weight: normal; color: black">Selon une étude de l'Université d'Oxford parue dans [nature](https://www.nature.com/articles/d41586-024-01641-0) en juin 2024 : les êtres humains sont généralement d'accord avec l'IA 92% du temps tandis qu'une IA secondaire l'est 93% du temps.</span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## La méthode de prompt A.C.T.I.F.
+- La qualité du prompt optimise la qualité des réponses.
+- Utilisez la méthode **A.C.T.I.F** proposée dans la formation [Outils IA](https://outilia.ch/formations/chatgpt-guide-debutant/lessons/la-demande-parfaite-pour-chatgpt-2/)) :
+	- **Action** : La tâche précise demandée (explique, résume, améliore, liste, complète, etc.).
+	- **Contexte** : Listes les facteurs pertinents qui contextualise la réponse (public cible, exemples, infos utiles, etc.).
+	- **Tonalité** : Le style et le ton de la réponse à employer (professionnel, décontracté, Formel, créatif, direct, etc.).
+	- **Identité** : Le rôle que vous donnerez à ChatGPT (un expert, un consultant, un étudiant, etc.)
+	- **Forme** : Le type de sortie attendue (tableau, résumé, plan de présentation, discours, liste, diaporama etc.).
+
+<div class="callout callout-color7">
+<div class="callout-title">
+<div class="callout-icon">
+
+<i class="fas fa-bolt" ></i>
+
+
+</div>
+<div class="callout-title-inner">
+
+Attention ! <span style="font-weight: normal; color: black"> Ne pas utiliser ChatGPT (conversation) comme le moteur de recherche Google (mots clés). </span>
+
+</div>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Exemple de prompt A.C.T.I.F.
+<img src="Pasted image 20240722122444.png" alt="" style="object-fit: scale-down">
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: style="color: #FFFFFF" class="has-dark-background drop" data-background-color="#0f6496" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Conclusion et ouverture
+<!-- .element: style="font-size: 3em; color: #FFFFFF" -->
+Résumé, conseils et plus...
+<!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 7%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-white.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Résumé du cours 
+
+- **Définition de l'IA** : L'Intelligence Artificielle (IA) imite l'intelligence humaine pour réaliser des tâches variées comme les assistants virtuels, la recommandation, ou la médecine.
+- **ChatGPT** : Un chatbot basé sur le modèle GPT d'OpenAI, capable de générer du texte de manière convaincante mais sans garantir l'exactitude des réponses.
+	- **Applications** : Aide dans l'éducation, la rédaction, le service client, la créativité et plus.
+	- **Limites** : Peut produire des informations incorrectes et n'a pas accès aux sources exactes.
+- **Risques liés à l'IA** :
+	- **Confidentialité** et **sécurité** des données.
+	- **Erreurs** et **biais** dans les réponses.
+- **Mesures d'atténuation** :
+	- **Réglementation** et **sensibilisation**.
+	- **Vérification** des informations et **formation** continue.
+	- Utilisez l'IA avec **discernement**, en étant conscient de ses capacités et limites.
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Ne soyez pas remplaçable par une IA
+- L'évolution de l'IA plus rapide en 3 ans que l'homme en plusieurs millions d'années.
+- L'IA **collecte**, **analyse**, **apprend**, **résonne** et **exécute plus vite que nous**.
+- Ce que l'IA ne doit pas, ou ne peut pas, faire à votre place :
+	- **Risquer sa peau**, prendre des décisions qui vous impliquent personnellement ou légalement. 
+	- **Avoir de l'intuition**, avoir du courage, avoir du recul, ressentir des émotions et agir en conséquence.
+	- **Avoir des interactions humaines** qui créent de la valeur.
+	- **Donner du sens**, comprendre les process au lieu de se concentrer sur le résultat.
+	- **Remplacer votre cerveau**, l'IA doit rester un outil parmi d'autres pour vous améliorer.
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div>
+
+<aside class="notes"><blockquote>
+<p>« <em>Toute chose ressemble à un clou, pour celui qui ne possède qu&#39;un marteau</em> » - Abraham Maslow (<em>The Psychology of Science</em>,  1966)</p>
+</blockquote>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-background-image="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+MERCI POUR VOTRE ÉCOUTE !<!-- .element: style="font-size: 1.5em" -->
+## Questions / Réponses 
+<!-- .element: style="font-size: 3em" -->
+Temps d'échange participatif
+<!-- .element: style="color: #bfd04d; font-size: 2em" -->
+
+<div class="" style="position: absolute; left: 0%; top: 0%; height: 10%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<img src="03 PROJETS/00-BTS-SIO/_logos/logo-icof-blue.png" alt="" style="object-fit: scale-down">
+
+</div>
+
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1000px; width: 1600px; min-height: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Pour aller plus loin
+- **Le fonctionnement de ChatGPT** : article de [Assemblyai.com](https://www.assemblyai.com/blog/how-chatgpt-actually-works/)
+- **Apprentissage des IA** : [Renforcement à partir du Feedback Humain (RLHF)](https://www.assemblyai.com/blog/how-rlhf-preference-model-tuning-works-and-how-things-may-go-wrong/)
+- **Hallucinations d'IA** :
+	- Étude de l'Université d'Oxford parue dans [nature](https://www.nature.com/articles/d41586-024-01641-0).
+	- Article paru dans [Science.org](https://www.science.org/content/article/is-your-ai-hallucinating-new-approach-can-tell-when-chatbots-make-things-up).
+- **Les sources de données utilisées par les IA** :
+	- [Infographie Statista](https://fr.statista.com/infographie/29976/sources-informations-et-connaissances-les-plus-utilisees-par-les-chatbots-ia-selon-la-part-des-tokens-dans-c4-google/)
+	- [Etude du Washington Post](https://www.washingtonpost.com/technology/interactive/2023/ai-chatbot-learning/?mc_cid=98263d3b18&mc_eid=49cabfbfdb)
+- **Podcast et formation** :
+	- [How I Built This Podcast with Guy Raz and Sam Altman, CEO d'OpenAI - Episode 491](https://open.spotify.com/episode/3oOX1QHLPw9uvLL5LmBk28?si=be01818cc53248b3)
+	- [ChatGPT : Formation gratuite (Débutants)](https://outilia.ch/formations/chatgpt-guide-debutant/) du site [Outils IA](https://outilia.ch/)
+- **Réglementation** : 
+	- La loi européenne sur l'IA : [EU AI Act](https://www.europarl.europa.eu/topics/fr/article/20230601STO93804/loi-sur-l-ia-de-l-ue-premiere-reglementation-de-l-intelligence-artificielle), 
+	- Réglementation européenne sur la protection des données [RGPD](https://www.cnil.fr/fr/rgpd-de-quoi-parle-t-on))
+
+
+ 
+<div class="" style="position: absolute; left: 0%; top: 95%; height: 5%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<p style="font-size:0.8em; font-weight:600">© 2024-2025 - BTS SIO - Lycée Technique Privé ICOF</p>
+</div>
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":1600,"height":1000,"margin":0.04,"controls":true,"progress":true,"slideNumber":true,"showNotes":null,"transition":"slide","transitionSpeed":"normal"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+	</script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
